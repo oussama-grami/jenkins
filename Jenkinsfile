@@ -9,7 +9,8 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git 'https://github.com/oussama-grami/jenkins.git'
+                git branch: 'main', url: 'https://github.com/oussama-grami/jenkins.git'
+
             }
         }
 
