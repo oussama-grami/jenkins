@@ -10,20 +10,21 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/oussama-grami/jenkins.git'
-
             }
         }
 
         stage('Tests') {
-    agent {
-        docker { image 'python:3.10' }
-    }
-    steps {
-        sh 'pip install --user -r requirements.txt'
-        sh 'python -m unittest discover || true'
-    }
-}
-
+            agent {
+                docker {
+                    image 'python:3.10'
+                    args '-u root'
+                }
+            }
+            steps {
+                sh 'pip install -r requirements.txt'
+                sh 'python -m unittest discover || true'
+            }
+        }
 
         stage('Build Image') {
             steps {
@@ -39,7 +40,6 @@ pipeline {
                     usernameVariable: 'USER',
                     passwordVariable: 'PASS'
                 )]) {
-
                     sh "echo $PASS | docker login -u $USER --password-stdin"
                     sh "docker push $IMAGE_NAME:${BUILD_NUMBER}"
                     sh "docker push $IMAGE_NAME:latest"
