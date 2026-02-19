@@ -19,7 +19,7 @@ pipeline {
         docker { image 'python:3.10' }
     }
     steps {
-        sh 'pip install -r requirements.txt'
+        sh 'pip install --user -r requirements.txt'
         sh 'python -m unittest discover || true'
     }
 }
